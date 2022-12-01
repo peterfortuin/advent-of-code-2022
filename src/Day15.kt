@@ -12,6 +12,6 @@ fun main() {
     check(part1(testInput) == 1)
 
     val input = readInput("Day15")
-    println(part1(input))
-    println(part2(input))
+    println("Part 1 = ${part1(input)}")
+    println("Part 2 = ${part2(input)}")
 }
