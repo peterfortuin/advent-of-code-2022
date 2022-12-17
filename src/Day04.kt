@@ -13,12 +13,22 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        return input
+            .map { line ->
+                line.parseLine()
+            }.map { rangePair ->
+                when {
+                    rangePair.first.intersect(rangePair.second).isNotEmpty() -> 1
+                    rangePair.second.intersect(rangePair.first).isNotEmpty() -> 1
+                    else -> 0
+                }
+            }.sum()
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day04_test")
     check(part1(testInput) == 2)
+    check(part2(testInput) == 4)
 
     val input = readInput("Day04")
     println("Part 1 = ${part1(input)}")
