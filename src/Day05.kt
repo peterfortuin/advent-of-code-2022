@@ -60,13 +60,31 @@ fun main() {
         return stacks.map<Stack<Char>, Any> { it.lastOrNull() ?: "" }.joinToString("")
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun part2(input: List<String>): String {
+        val (stacks, moveInstructions) = parseInput(input)
+
+        moveInstructions.forEach { move ->
+            val fromStack = stacks[move.from - 1]
+            val toStack = stacks[move.to - 1]
+
+            val moveItems = mutableListOf<Char>()
+            repeat(move.amount) {
+                moveItems.add(fromStack.pop())
+            }
+
+            moveItems.reverse()
+            moveItems.forEach { item ->
+                toStack.push(item)
+            }
+        }
+
+        return stacks.map<Stack<Char>, Any> { it.lastOrNull() ?: "" }.joinToString("")
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day05_test")
     check(part1(testInput) == "CMZ")
+    check(part2(testInput) == "MCD")
 
     val input = readInput("Day05")
     println("Part 1 = ${part1(input)}")
