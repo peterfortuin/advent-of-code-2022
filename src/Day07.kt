@@ -30,12 +30,29 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val tree = parseToTree(input)
+
+        val spaceNeeded = 30000000 - (70000000 - tree.getSize())
+
+        val dirList = mutableListOf<TreeNode>()
+        tree.forEachDepthFirst { node ->
+            if (node.isDirectory()) {
+                dirList.add(node)
+            }
+        }
+
+        dirList
+            .filter { dir -> dir.getSize() > spaceNeeded }
+            .sortedBy { dir -> dir.getSize() }.first()
+            .let { dir ->
+                return dir.getSize()
+            }
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day07_test")
     check(part1(testInput) == 95437)
+    check(part2(testInput) == 24933642)
 
     val input = readInput("Day07")
     println("Part 1 = ${part1(input)}")
@@ -61,7 +78,7 @@ class TreeNode(val name: String, private val size: Int = 0) {
     }
 
     fun getSize(): Int {
-        return size + children.sumBy { it.getSize() }
+        return size + children.sumOf { it.getSize() }
     }
 
     fun isDirectory(): Boolean {
